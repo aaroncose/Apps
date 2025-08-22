@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organizador - Tareas y Gastos</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <meta name="description" content="Organizador simple para gestionar tareas y gastos personales">
+</head>
+<body>
+    <!-- Contenedor principal con efecto grain -->
+    <div class="app-container">
+        <!-- Header con navegación de pestañas -->
+        <header class="app-header">
+            <h1 class="app-title">Organizador</h1>
+            <nav class="tab-navigation" role="tablist">
+                <button class="tab-button active" role="tab" aria-selected="true" data-tab="tareas">
+                    Tareas
+                </button>
+                <button class="tab-button" role="tab" aria-selected="false" data-tab="gastos">
+                    Gastos
+                </button>
+            </nav>
+        </header>
+
+        <!-- Contenido principal -->
+        <main class="app-main">
+            <!-- Pestaña Tareas -->
+            <section id="tareas" class="tab-content active" role="tabpanel" aria-labelledby="tab-tareas">
+                <div class="content-header">
+                    <h2>Gestión de Tareas</h2>
+                    <div class="task-stats">
+                        <div class="stat-card">
+                            <span class="stat-number" id="total-tasks">0</span>
+                            <span class="stat-label">Total</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="pending-tasks">0</span>
+                            <span class="stat-label">Pendientes</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="completed-tasks">0</span>
+                            <span class="stat-label">Completadas</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de nueva tarea -->
+                <form id="task-form" class="task-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="task-text" class="form-label">Descripción de la tarea</label>
+                            <input 
+                                type="text" 
+                                id="task-text" 
+                                class="form-input" 
+                                placeholder="¿Qué necesitas hacer?"
+                                required
+                                maxlength="200"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="task-priority" class="form-label">Prioridad</label>
+                            <select id="task-priority" class="form-select">
+                                <option value="alta">Alta</option>
+                                <option value="media" selected>Media</option>
+                                <option value="baja">Baja</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Añadir Tarea
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Búsqueda de tareas -->
+                <div class="search-container">
+                    <label for="task-search" class="search-label">Buscar tareas</label>
+                    <input 
+                        type="text" 
+                        id="task-search" 
+                        class="search-input" 
+                        placeholder="Filtrar tareas..."
+                    >
+                </div>
+
+                <!-- Lista de tareas -->
+                <div class="tasks-container">
+                    <ul id="tasks-list" class="tasks-list" role="list">
+                        <!-- Las tareas se renderizan dinámicamente aquí -->
+                    </ul>
+                    <div id="tasks-empty" class="empty-state" style="display: none;">
+                        <p>No hay tareas que mostrar</p>
+                    </div>
+                </div>
+
+                <!-- Botón limpiar tareas -->
+                <div class="actions-container">
+                    <button id="clear-tasks" class="btn btn-secondary">
+                        Limpiar Todas las Tareas
+                    </button>
+                </div>
+            </section>
+
+            <!-- Pestaña Gastos -->
+            <section id="gastos" class="tab-content" role="tabpanel" aria-labelledby="tab-gastos">
+                <div class="content-header">
+                    <h2>Control de Gastos</h2>
+                    <div class="expense-stats">
+                        <div class="stat-card primary">
+                            <span class="stat-number" id="total-expenses">0,00 €</span>
+                            <span class="stat-label">Total General</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-number" id="monthly-expenses">0,00 €</span>
+                            <span class="stat-label">Este Mes</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario de nuevo gasto -->
+                <form id="expense-form" class="expense-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expense-description" class="form-label">Descripción</label>
+                            <input 
+                                type="text" 
+                                id="expense-description" 
+                                class="form-input" 
+                                placeholder="¿En qué gastaste?"
+                                required
+                                maxlength="100"
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-amount" class="form-label">Monto (€)</label>
+                            <input 
+                                type="number" 
+                                id="expense-amount" 
+                                class="form-input" 
+                                placeholder="0,00"
+                                step="0.01"
+                                min="0.01"
+                                required
+                            >
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-category" class="form-label">Categoría</label>
+                            <select id="expense-category" class="form-select">
+                                <option value="fijos">Fijos</option>
+                                <option value="ocio">Ocio</option>
+                                <option value="comida">Comida</option>
+                                <option value="coche">Coche</option>
+                                <option value="extras">Extras</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="expense-date" class="form-label">Fecha</label>
+                            <input 
+                                type="date" 
+                                id="expense-date" 
+                                class="form-input"
+                                required
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Añadir Gasto
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Filtros de gastos -->
+                <div class="filters-container">
+                    <div class="filter-group">
+                        <label for="category-filter" class="filter-label">Categoría</label>
+                        <select id="category-filter" class="filter-select">
+                            <option value="">Todas las categorías</option>
+                            <option value="fijos">Fijos</option>
+                            <option value="ocio">Ocio</option>
+                            <option value="comida">Comida</option>
+                            <option value="coche">Coche</option>
+                            <option value="extras">Extras</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="month-filter" class="filter-label">Mes</label>
+                        <input 
+                            type="month" 
+                            id="month-filter" 
+                            class="filter-input"
+                        >
+                    </div>
+                </div>
+
+                <!-- Totales por categoría -->
+                <div class="category-totals">
+                    <h3>Totales por Categoría</h3>
+                    <div id="category-cards" class="category-cards">
+                        <!-- Los totales por categoría se renderizan dinámicamente aquí -->
+                    </div>
+                </div>
+
+                <!-- Tabla de gastos -->
+                <div class="expenses-container">
+                    <div class="table-container">
+                        <table id="expenses-table" class="expenses-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Categoría</th>
+                                    <th>Descripción</th>
+                                    <th>Monto</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="expenses-tbody">
+                                <!-- Los gastos se renderizan dinámicamente aquí -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="expenses-empty" class="empty-state" style="display: none;">
+                        <p>No hay gastos que mostrar</p>
+                    </div>
+                </div>
+
+                <!-- Botón limpiar gastos -->
+                <div class="actions-container">
+                    <button id="clear-expenses" class="btn btn-secondary">
+                        Limpiar Todos los Gastos
+                    </button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script principal -->
+    <script src="app.js"></script>
+</body>
+</html>
